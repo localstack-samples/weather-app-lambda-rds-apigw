@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Report Application</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <img src="images/logo_white_cropped.png" alt="Open Weather Logo" class="logo">
+        <h1>Weather Report Application</h1>
+    </header>
+    <div class="tabs">
+        <button class="tab-button" onclick="showTab('weather')">Check Weather</button>
+        <button class="tab-button" onclick="showTab('history')">History</button>
+    </div>
+    <div id="weather" class="tab-content">
+        <input type="text" id="location" placeholder="Location">
+        <button onclick="fetchWeather()">Get Weather</button>
+        <div id="weatherResponse" class="response"></div>
+    </div>
+    <div id="history" class="tab-content" style="display:none;">
+        <input type="text" id="locationHistory" placeholder="Location">
+        <button onclick="showHistory()">Show History</button>
+        <div id="historyResponse" class="response"></div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html> 

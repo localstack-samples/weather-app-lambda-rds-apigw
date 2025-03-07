@@ -1,0 +1,161 @@
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    font-size: 18px; /* Base font size for the body */
+}
+
+header {
+    display: flex;
+    background-color: #333;
+    padding: 10px;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+    position: sticky;
+    top: 0;
+}
+
+.logo {
+    height: 40px;
+    margin-right: 10px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px; /* Larger font size for the header */
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    width: 100%;
+}
+
+.tab-button {
+    padding: 14px 28px; /* Increase padding for larger buttons */
+    cursor: pointer;
+    border: none;
+    background-color: #fff;
+    font-size: 20px; /* Larger font size for buttons */
+    transition: background-color 0.3s;
+    color: #333;
+    border-radius: 8px; /* Add curved borders */
+}
+
+.tab-button:hover {
+    background-color: #f0f0f0;
+}
+
+.tab-button.active {
+    background-color: #ff6c37; /* Orange for active tab */
+    color: white;
+}
+
+.tab-content {
+    padding: 20px;
+    display: none;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+input[type="text"] {
+    font-size: 18px; /* Consistent font size for text inputs */
+    padding: 8px;
+    margin: 10px 0;
+    width: calc(100% - 20px);
+    max-width: 560px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    font-size: 20px; /* Larger font size for all buttons */
+    padding: 14px 28px; /* Increase padding for larger buttons */
+    margin: 10px 0;
+    border: none;
+    background-color: #fff; /* Revert to white background */
+    color: #333; /* Revert to dark text color */
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 8px; /* Add curved borders */
+    border: 1px solid #ddd; /* Add border for definition */
+}
+
+button:hover {
+    background-color: #f0f0f0;
+}
+
+.response {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    text-align: left;
+    font-size: 18px; /* Consistent font size for response text */
+    display: none; /* Hide by default */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+th {
+    background-color: #f0f0f0;
+}
+
+.weather-preview {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* ✅ Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    white-space: normal;
+    word-break: break-word;
+    padding-bottom: 5px;
+}
+
+/* Copy Button */
+.copy-btn {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    border-radius: 4px;
+}
+
+.copy-btn:hover {
+    background-color: #45a049;
+}
+
+.copy-btn.copied {
+    background-color: #2196F3;  /* Blue to indicate success */
+    color: white;
+}
+
+.copy-btn.copied::after {
+    content: ' ✓';  /* Add a checkmark after the button text */
+}
