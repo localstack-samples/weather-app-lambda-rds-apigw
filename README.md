@@ -12,16 +12,17 @@ The database is an RDS PostgreSQL instance.
 
 ## Prerequisites
 
-**For Local Development** (requires a [LocalStack Pro license](https://app.localstack.cloud/workspace/auth-token)):
+**For Local Development** (requires a [LocalStack for AWS license](https://localstack.cloud/pricing)):
 
 - Docker
 - Java 21
 - Maven (3.9.9)
 - Node.js (v23.5.0)
-- Terraform (v1.9.3) + [terraform-local](https://github.com/localstack/terraform-local) 
+- Terraform (v1.9.3) + [terraform-local](https://github.com/localstack/terraform-local)
 - [LocalStack](https://docs.localstack.cloud/getting-started/installation/) (for local development)
 - AWS CLI
 - [Open Weather API key (free tier)](https://home.openweathermap.org/api_keys) - to include in terraform/variables.tf and terraform-local/variables.tf
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
 
 **For Deployment to AWS**:
 
