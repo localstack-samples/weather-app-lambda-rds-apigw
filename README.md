@@ -12,7 +12,7 @@ The database is an RDS PostgreSQL instance.
 
 ## Prerequisites
 
-**For Local Development**:
+**For Local Development** (requires a [LocalStack Pro license](https://app.localstack.cloud/workspace/auth-token)):
 
 - Docker
 - Java 21
@@ -113,10 +113,12 @@ You can change the files as needed. The frontend will be available at `http://lo
 
 ### Run LocalStack and Deploy Infrastructure Locally
 
-After installing the LocalStack CLI (via pip or homebrew), run the following command:
+Start LocalStack Pro with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 
 ```sh
-    DEBUG=1 localstack start
+export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
+localstack auth set-token $LOCALSTACK_AUTH_TOKEN
+DEBUG=1 localstack start -d
 ```
 
 **Deploy Infrastructure Locally**:
