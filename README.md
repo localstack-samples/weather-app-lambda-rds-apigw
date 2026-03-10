@@ -12,16 +12,17 @@ The database is an RDS PostgreSQL instance.
 
 ## Prerequisites
 
-**For Local Development**:
+**For Local Development** (requires a [LocalStack for AWS license](https://localstack.cloud/pricing)):
 
 - Docker
 - Java 21
 - Maven (3.9.9)
 - Node.js (v23.5.0)
-- Terraform (v1.9.3) + [terraform-local](https://github.com/localstack/terraform-local) 
+- Terraform (v1.9.3) + [terraform-local](https://github.com/localstack/terraform-local)
 - [LocalStack](https://docs.localstack.cloud/getting-started/installation/) (for local development)
 - AWS CLI
 - [Open Weather API key (free tier)](https://home.openweathermap.org/api_keys) - to include in terraform/variables.tf and terraform-local/variables.tf
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
 
 **For Deployment to AWS**:
 
@@ -113,10 +114,12 @@ You can change the files as needed. The frontend will be available at `http://lo
 
 ### Run LocalStack and Deploy Infrastructure Locally
 
-After installing the LocalStack CLI (via pip or homebrew), run the following command:
+Start LocalStack for AWS with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 
 ```sh
-    DEBUG=1 localstack start
+export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
+localstack auth set-token $LOCALSTACK_AUTH_TOKEN
+DEBUG=1 localstack start -d
 ```
 
 **Deploy Infrastructure Locally**:
