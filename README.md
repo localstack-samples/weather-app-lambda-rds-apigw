@@ -114,7 +114,7 @@ You can change the files as needed. The frontend will be available at `http://lo
 
 ### Run LocalStack and Deploy Infrastructure Locally
 
-Start LocalStack Pro with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
+Start LocalStack for AWS with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 
 ```sh
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
