@@ -18,11 +18,11 @@ The database is an RDS PostgreSQL instance.
 - Java 21
 - Maven (3.9.9)
 - Node.js (v23.5.0)
-- Terraform (v1.9.3) + [terraform-local](https://github.com/localstack/terraform-local)
-- [LocalStack](https://docs.localstack.cloud/getting-started/installation/) (for local development)
-- AWS CLI
+- Terraform (v1.9.3)
+- [`lstk` CLI](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/), installed via `npm install -g @localstack/lstk` or `brew install localstack/tap/lstk`
+- AWS CLI (required by `lstk aws`)
 - [Open Weather API key (free tier)](https://home.openweathermap.org/api_keys) - to include in terraform/variables.tf and terraform-local/variables.tf
-- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
+- A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) to activate LocalStack.
 
 **For Deployment to AWS**:
 
@@ -118,23 +118,22 @@ Start LocalStack for AWS with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 
 ```sh
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
-localstack auth set-token $LOCALSTACK_AUTH_TOKEN
-DEBUG=1 localstack start -d
+LOCALSTACK_DEBUG=1 lstk start
 ```
 
 **Deploy Infrastructure Locally**:
 
-After installing terraform-local, run the following commands:
+Run the following commands:
 
 ```sh
     cd terraform-local
-    tflocal init
-    tflocal apply --auto-approve
+    lstk tf init
+    lstk tf apply --auto-approve
 ```
 
 Once this is done, you will need to run the following command to create the database tables:
 ```shell
-awslocal lambda invoke --function-name db-setup --region us-east-1 output.json 
+lstk aws lambda invoke --function-name db-setup --region us-east-1 output.json 
 ```
 
 or
@@ -144,7 +143,7 @@ or
  ```
 
 **Note!** 
-It could happen that the `tflocal apply` executes successfully, but the resources are _not ready yet_, hence the endpoints will not be available to pass to the Lambdas and environment variables.
+It could happen that the `lstk tf apply` executes successfully, but the resources are _not ready yet_, hence the endpoints will not be available to pass to the Lambdas and environment variables.
 Check the `terraform.tfstate` file, particularly for the `HOST` and `PORT` environment variables in the `aws_lambda_function` resource. 
 These are the endpoint and port for the RDS Proxy instance.
 In this case, please run the command again. You will see that a few resources have changed:
@@ -177,10 +176,10 @@ The full data from the Weather API can be copied to the clipboard by clicking th
 
 ```sh
     cd terraform-local
-    tflocal destroy
+    lstk tf destroy
 ```
 Or just shut down the LocalStack container:
 
 ```sh
-    localstack stop
+    lstk stop
 ```
