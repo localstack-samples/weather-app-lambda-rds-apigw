@@ -22,7 +22,7 @@ public class InitDBHandler implements RequestHandler<Map<String, Object>, Map<St
         try (Connection conn = getDbConnection();
              Statement stmt = conn.createStatement()) {
 
-            String createHistoryTableQuery = "CREATE TABLE history (" +
+            String createHistoryTableQuery = "CREATE TABLE IF NOT EXISTS history (" +
                     "    id SERIAL PRIMARY KEY," +
                     "    location VARCHAR(50) NOT NULL," +
                     "    check_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP," +
@@ -32,7 +32,7 @@ public class InitDBHandler implements RequestHandler<Map<String, Object>, Map<St
                     "    feel_temp DOUBLE PRECISION NOT NULL);";
             stmt.executeUpdate(createHistoryTableQuery);
 
-            String createWeatherTableQuery = "CREATE TABLE weather (" +
+            String createWeatherTableQuery = "CREATE TABLE IF NOT EXISTS weather (" +
                     "    data_id INTEGER PRIMARY KEY," +
                     "    weather_data JSONB NOT NULL," +
                     "    CONSTRAINT fk_history" +

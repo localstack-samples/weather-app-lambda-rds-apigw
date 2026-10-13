@@ -144,13 +144,36 @@ or
 
 **Note!** 
 It could happen that the `lstk tf apply` executes successfully, but the resources are _not ready yet_, hence the endpoints will not be available to pass to the Lambdas and environment variables.
-Check the `terraform.tfstate` file, particularly for the `HOST` and `PORT` environment variables in the `aws_lambda_function` resource. 
-These are the endpoint and port for the RDS Proxy instance.
+Check the `terraform.tfstate` file, particularly for the `HOST` environment variable in the `aws_lambda_function` resources.
+It holds the RDS Proxy endpoint and port. In `terraform-local` the port is the cluster port, since LocalStack serves the database on the cluster port instead of 5432.
 In this case, please run the command again. You will see that a few resources have changed:
 
 ```shell
 Apply complete! Resources: 0 added, 8 changed, 0 destroyed.
 ```
+
+### Test the application
+
+With LocalStack running, build, deploy and test with:
+
+```shell
+make build
+make deploy
+make test
+```
+
+`make test` creates the tables with `db-setup`, checks the weather for a city through API Gateway, and reads the stored check back from the history API.
+
+To run without an OpenWeather API key, point the weather Lambda at a stub before deploying.
+The test then serves the responses in `tests/fixtures` from S3 and checks both verdicts:
+
+```shell
+export TF_VAR_open_weather_base_url=http://localhost.localstack.cloud:4566/weather-stub/weather.json
+make deploy
+make test
+```
+
+Without the stub, `make test` calls the real OpenWeather API for `London` (override with `CITY=<name>`).
 
 In the Check Weather tab, you can enter a city name and click the "Get Weather" button. 
 The application will display the weather for the city you entered, along with the verdict: the weather must be over 20 degrees Celsius with no clouds.

@@ -21,3 +21,8 @@ variable "aws_account_id" {
 variable "open_weather_api_key" {
   default = "your_open_weather_api_key"
 }
+
+variable "open_weather_base_url" {
+  description = "OpenWeather current weather endpoint. Point it at a stub to run without an API key."
+  default     = "https://api.openweathermap.org/data/2.5/weather"
+}

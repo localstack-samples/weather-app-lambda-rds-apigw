@@ -441,7 +441,8 @@ resource "aws_lambda_function" "weather_lambda" {
   environment {
     variables = {
       OPEN_WEATHER_API_KEY = var.open_weather_api_key
-      HOST          = aws_db_proxy.historydb_proxy.endpoint
+      OPEN_WEATHER_BASE_URL = var.open_weather_base_url
+      HOST          = "${aws_db_proxy.historydb_proxy.endpoint}:${aws_rds_cluster.historydb_cluster.port}"
       DB_NAME = var.db_name
       DB_USER     = var.db_username
       DB_PASSWORD = var.db_password
@@ -474,7 +475,7 @@ resource "aws_lambda_function" "history_lambda" {
 
   environment {
     variables = {
-      HOST          = aws_db_proxy.historydb_proxy.endpoint
+      HOST          = "${aws_db_proxy.historydb_proxy.endpoint}:${aws_rds_cluster.historydb_cluster.port}"
       DB_NAME = var.db_name
       DB_USER     = var.db_username
       DB_PASSWORD = var.db_password
@@ -505,7 +506,7 @@ vpc_config {
 
   environment {
     variables = {
-      HOST          = aws_db_proxy.historydb_proxy.endpoint
+      HOST          = "${aws_db_proxy.historydb_proxy.endpoint}:${aws_rds_cluster.historydb_cluster.port}"
       DB_NAME = var.db_name
       DB_USER     = var.db_username
       DB_PASSWORD = var.db_password
@@ -567,7 +568,7 @@ resource "aws_apigatewayv2_route" "weather_route" {
 
 resource "aws_apigatewayv2_route" "options_proxy_weather" {
   api_id    = aws_apigatewayv2_api.weather_api.id
-  route_key = "OPTIONS /weather/"
+  route_key = "OPTIONS /weather/{location}"
   target    = "integrations/${aws_apigatewayv2_integration.weather_integration.id}"
 }
 
@@ -588,7 +589,7 @@ resource "aws_apigatewayv2_route" "history_route" {
 
 resource "aws_apigatewayv2_route" "options_proxy_history" {
   api_id    = aws_apigatewayv2_api.weather_api.id
-  route_key = "OPTIONS /history/"
+  route_key = "OPTIONS /history/{location}"
   target    = "integrations/${aws_apigatewayv2_integration.history_integration.id}"
 }
 
