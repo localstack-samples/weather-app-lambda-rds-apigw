@@ -19,7 +19,13 @@ stop:		## Stop LocalStack
 logs:		## Save the logs in a separate file
 	@lstk logs > logs.txt
 
+build:		## Build the Lambda functions
+	cd backend && mvn -B clean package
+
 deploy:		## Deploy infrastructure using Terraform
 	cd terraform-local && lstk tf init && lstk tf apply --auto-approve
 
-.PHONY: usage install start stop logs deploy
+test:		## Check the weather and history APIs end to end
+	./test.sh
+
+.PHONY: usage install start stop logs build deploy test

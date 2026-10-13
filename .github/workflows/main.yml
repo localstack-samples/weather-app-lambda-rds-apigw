@@ -1,0 +1,70 @@
+name: Deploy on LocalStack
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    name: Deploy and test the weather app
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      # Serve the OpenWeather responses from S3 so CI needs no API key
+      TF_VAR_open_weather_base_url: http://localhost.localstack.cloud:4566/weather-stub/weather.json
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install lstk
+        run: |
+          npm install -g @localstack/lstk
+          lstk setup aws --force --non-interactive
+
+      - name: Build the Lambda functions
+        run: make build
+
+      - name: Start LocalStack
+        env:
+          LOCALSTACK_AUTH_TOKEN: ${{ secrets.LOCALSTACK_AUTH_TOKEN }}
+        run: lstk start
+
+      - name: Deploy the infrastructure
+        run: make deploy
+
+      - name: Run tests
+        run: make test
+
+      - name: Show LocalStack logs
+        if: failure()
+        run: |
+          (cd terraform-local && lstk tf output) || true
+          for f in weather-lambda history-lambda db-setup; do
+            echo "== $f"
+            lstk aws logs filter-log-events --log-group-name /aws/lambda/$f --query 'events[].message' --output text | tail -40 || true
+          done
+          lstk logs | tail -300

@@ -25,7 +25,9 @@ public class WeatherHandler implements RequestHandler<Map<String, Object>, Map<S
     private static final String DB_USER = System.getenv("DB_USER");
     private static final String DB_PASSWORD = System.getenv("DB_PASSWORD");
     private static final String OPEN_WEATHER_API_KEY = System.getenv("OPEN_WEATHER_API_KEY");
-    private static final String BASE_URL  = "https://api.openweathermap.org/data/2.5/weather";
+    // Overridable so the app can be tested against a stub of the OpenWeather API
+    private static final String BASE_URL = System.getenv().getOrDefault(
+            "OPEN_WEATHER_BASE_URL", "https://api.openweathermap.org/data/2.5/weather");
 
 
     @Override
@@ -52,7 +54,7 @@ public class WeatherHandler implements RequestHandler<Map<String, Object>, Map<S
     public Map<String, Object> fetchAndSaveWeatherData(String city) {
         try {
 
-            String urlString = BASE_URL + "?q=" + city
+            String urlString = BASE_URL + "?q=" + java.net.URLEncoder.encode(city, java.nio.charset.StandardCharsets.UTF_8)
                     + "&units=metric" + "&appid=" + OPEN_WEATHER_API_KEY;
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
