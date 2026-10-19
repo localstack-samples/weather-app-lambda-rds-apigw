@@ -705,7 +705,10 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 #########################################
 
 resource "aws_s3_object" "frontend_files" {
-  for_each = fileset("${path.module}/../frontend", "**/*.*")
+  # Static assets only: config.json is generated during the apply (local_file below) and uploaded by
+  # aws_s3_object.config_json. If fileset() matched it, its result would change mid-apply and Terraform
+  # would fail with "function returned an inconsistent result".
+  for_each = fileset("${path.module}/../frontend", "**/*.{html,css,js,png,jpg,jpeg,gif,svg,ico}")
 
   bucket = aws_s3_bucket.weather_validator_bucket.id
   key    = each.value
